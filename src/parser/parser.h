@@ -5,12 +5,10 @@
 #include <string>
 #include <sstream>
 #include <utility>
-#include <iostream>
-#include <fstream>
 #include <stdlib.h>
 #include "mrcpsp.h"
-
-using namespace std;
+#include <iostream>
+#include <fstream>
 
 namespace parser
 {

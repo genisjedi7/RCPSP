@@ -1,5 +1,5 @@
-#ifndef ORDER_DEFINITION
-#define ORDER_DEFINITION
+#ifndef TASK_DEFINITION
+#define TASK_DEFINITION
 
 
 #include <vector>

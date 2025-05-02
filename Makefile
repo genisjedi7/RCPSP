@@ -16,11 +16,6 @@ RELEASE_BINROOT := bin/release
 DEBUG_BINROOT := bin/debug
 
 DEBUG := 0
-YICES := 1
-GLUCOSE :=1
-MINISAT := 1
-CUSTOMYICES := 0
-CPOPTIMIZER := 1
 
 DIRECTORIES := 	smtapi/src \
 			smtapi/src/util \
@@ -32,7 +27,7 @@ DIRECTORIES := 	smtapi/src \
 		encodings \
 			encodings/MRCPSP \
 		parser \
-		controllers
+		controllers \
 
 SOURCES := $(addprefix smtapi/src/util/, \
 	util.cpp \
@@ -58,6 +53,7 @@ SOURCES += $(addprefix smtapi/src/MDD/, \
 	amopbmddbuilder.cpp \
 	amopbbddbuilder.cpp \
 )
+
 
 SOURCES += $(addprefix smtapi/src/encoders/, \
 	encoder.cpp \
@@ -88,10 +84,11 @@ SOURCES += $(addprefix encodings/MRCPSP/,\
 	omtsatpbencoding.cpp \
 	omtsoftpbencoding.cpp \
 	mrcpspsatencoding.cpp \
-	time.cpp \
-	order.cpp \
 	doubleorder.cpp \
 )
+# timeencoding.cpp \
+# 	order.cpp \
+
 
 SOURCES += $(addprefix parser/, \
  	parser.cpp \

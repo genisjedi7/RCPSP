@@ -4,7 +4,7 @@
 #include "mdd.h"
 #include "errors.h"
 #include "util.h"
-#include <limits.h>
+#include <limits>
 #include <algorithm>
 #include <math.h>
 

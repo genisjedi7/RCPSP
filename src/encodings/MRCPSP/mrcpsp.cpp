@@ -1,8 +1,9 @@
 #include "mrcpsp.h"
-#include "limits.h"
+#include <limits>
 #include <list>
 #include <algorithm>
 #include <cstdlib>
+#include <cstdint>
 #include "util.h"
 #include "bipgraph.h"
 #include "disjointset.h"
