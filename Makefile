@@ -75,7 +75,7 @@ SOURCES += $(addprefix smtapi/src/, \
 	encoding.cpp \
 )
 
-#  task.cpp i time.cpp
+
 SOURCES += $(addprefix encodings/MRCPSP/,\
 	mrcpsp.cpp \
 	mrcpspencoding.cpp \

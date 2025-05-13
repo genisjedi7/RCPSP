@@ -48,23 +48,23 @@ SMTFormula * TimeEncoding::encode(int lb, int ub){
   f->addClause(f->bvar("o",0,0)); //S_0 = 0
 
 	//Definition of x_{i,t}
-  // x_{i,t} <-> s_{i,t} /\ - s_{i,t-p_i} 
+  	// x_{i,t} <-> s_{i,t} /\ - s_{i,t-p_i} 
 	for(int i=0; i < N+2; i++){
-    int ESi=ins->ES(i);
-    int LSi=ins->LS(i,ub);
-    int ECi=ins->EC(i);
-    int LCi=ins->LC(i,ub);
-    int dur = ins->getDuration(i,0);
-    if(LSi >= ESi){
-      for(int t=ESi; t < LCi; t++){
-        boolvar x = f->bvar("x",i,t);
-        boolvar s = t < ESi ? f->falseVar() : t > LSi ? f->trueVar() : f->bvar("s",i,t);
-        boolvar s2 = t-dur < ESi ? f->falseVar() : t-dur > LSi ? f->trueVar() : f->bvar("s",i,t-dur);
-        f->addClause(!s | s2 | x );
-        f->addClause(s | !x );
-        f->addClause(!s2| !x );
-      }
-    }
+    	int ESi=ins->ES(i);
+    	int LSi=ins->LS(i,ub);
+    	int ECi=ins->EC(i);
+    	int LCi=ins->LC(i,ub);
+    	int dur = ins->getDuration(i,0);
+    	if(LSi >= ESi){
+    		for(int t=ESi; t < LCi; t++){
+    			boolvar x = f->bvar("x",i,t);
+    			boolvar s = t < ESi ? f->falseVar() : t > LSi ? f->trueVar() : f->bvar("s",i,t);
+    			boolvar s2 = t-dur < ESi ? f->falseVar() : t-dur > LSi ? f->trueVar() : f->bvar("s",i,t-dur);
+    			f->addClause(!s | s2 | x );
+    			f->addClause(s | !x );
+    			f->addClause(!s2| !x );
+    		}
+    	}
 	}
 
 	//Precedences

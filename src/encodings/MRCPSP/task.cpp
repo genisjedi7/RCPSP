@@ -49,48 +49,47 @@ SMTFormula * Task::encode(int lb, int ub){
    //isPred (i es precedent de j) aprox per el reachable, el graf de precedencies extès
    // Variables z_{i,j} i definició
 
-   for (int i = 1; i <= N; ++i) {
-      for (int j = 1; j <= N; ++j) {
-         if (!isPred(i,j)) {
-            f->newBoolVar("z", i, j);
-            int dur = ins->getDuration(i, 0);
-            boolvar z = f->bvar("z", i, j);
-            clause c=z;
-            for (int t = ins->ES(j); t <= ins->LS(j, ub); t++) {
-               f->newBoolVar("a1", t);
-               f->newBoolVar("a2", t);
-               boolvar si;
-               if (t < ins->ES(i)) si= f->falseVar();
-               else if(t > ins->LS(i, ub)) si= f->trueVar() ;
-               else f->bvar("s", i, t);
-               boolvar sj = f->bvar("s", j, t);
-               boolvar siprev;
-               if(t - dur + 1 < ins->ES(i)) siprev= f->falseVar();
-               else if(t - dur + 1 > ins->LS(i, ub)) siprev= f->trueVar();
-               else siprev=f->bvar("s", i, t - dur + 1);
-               /*a1 <-> 1j v i
-               a2 <-> j v !p
-               !a1 v b v c
-               !b v a1
-               !c v a1*/
-
-               //z <-> &t ( (¬s(j,t) | s(i,t)) & (s(j,t) | ¬s(i,t-p(i)+1)) )
-               f->addClause(!sj | si | !z); // z -> (¬s(j,t) | s(i,t)) == a1
-               f->addClause(sj | !siprev | !z); // z -> (s(j,t) | ¬s(i,t-p(i)+1))  == a2
-               // &t a==(¬s(j,t) | s(i,t)) & (s(j,t) | ¬s(i,t-p(i)+1)) -> z
-               //c|=a;
-            }
-         }
-      }
-   }
-      //a->z
-   for (int i = 1; i <= N; ++i) {
-      for (int j = 1; j <= N; ++j) {
-         for (int t = ins->ES(j); t <= ins->LS(j, ub); t++) {
-
-         }
-      }
-   }
+	for (int i = 1; i <= N; ++i) {
+    	for (int j = 1; j <= N; ++j) {
+    	   	if (!isPred(i,j)) {
+    	    	f->newBoolVar("z", i, j);
+    	    	int dur = ins->getDuration(i, 0);
+    	    	boolvar z = f->bvar("z", i, j);
+    	    	clause c=z;
+    	    	for (int t = ins->ES(j); t <= ins->LS(j, ub); t++) {
+    	        	f->newBoolVar("a1", t);
+    	        	f->newBoolVar("a2", t);
+			   		boolvar a1 = f->bvar("a1", t);
+			   		boolvar a2 = f->bvar("a2", t);
+    	        	boolvar si;
+    	        	if (t < ins->ES(i)) si= f->falseVar();
+    	        	else if(t > ins->LS(i, ub)) si= f->trueVar() ;
+    	        	else f->bvar("s", i, t);
+    	        	boolvar sj = f->bvar("s", j, t);
+    	        	boolvar siprev;
+    	        	if(t - dur + 1 < ins->ES(i)) siprev= f->falseVar();
+    	        	else if(t - dur + 1 > ins->LS(i, ub)) siprev= f->trueVar();
+    	        	else siprev=f->bvar("s", i, t - dur + 1);
+			   		//z <-> &t ( (¬s(j,t) | s(i,t)) & (s(j,t) | ¬s(i,t-p(i)+1)) )
+    	        	//a1 <-> !j v i
+			   		f->addClause( !a1 | !sj | si);
+			   		f->addClause( sj | a1);
+			   		f->addClause( !si | a1);
+    	        	//a2 <-> j v !p
+			   		f->addClause( !a2 | sj | !siprev);
+			   		f->addClause( !sj | a2);
+			   		f->addClause( siprev | a2);			   
+			
+    	        	f->addClause( a1 | !z); // z -> (¬s(j,t) | s(i,t)) == a1
+    	        	f->addClause( a2 | !z); // z -> (s(j,t) | ¬s(i,t-p(i)+1))  == a2
+    	        	// &t a==(¬s(j,t) | s(i,t)) & (s(j,t) | ¬s(i,t-p(i)+1)) -> z
+    	        	c|=a1;
+			   		c|=a2;
+    	      	}
+    	  	}
+      	}
+	}
+	
 	//Precedences
 	for(int i=0; i< N+2; i++){
 		int ESi=ins->ES(i);
